@@ -9,6 +9,8 @@
 <!-- Founded by Inventor Dan Zen - http://danzen.com - Canadian New Media Award Winner 	-->
 <!-- ZIM is free to use. You can donate to help improve ZIM at http://zimjs.com/donate 	-->
 
+<!-- <script src="http://d309knd7es5f10.cloudfront.net/createjs_1.1_min.js"></script> -->
+<!-- <script src="libraries/createjs-2015.11.26.min.js"></script> -->
 <script src="libraries/createjs_1.1_min.js"></script>
 <script>
 	var zon = true; // set to false to turn off console messages from zim
@@ -39,7 +41,7 @@ frame.on("ready", function() {
     frame.outerColor = "#444";
     frame.color = "#ddd";
 
-		frame.loadAssets(["cat.png", "mouse.png", "logo.jpg", "cheese.png"], "assets/");
+		frame.loadAssets(["cat.png", "mouse.png", "logo.jpg", "cheese.png", "meow.mp3", "squeak.mp3", "icon.jpg"], "assets/");
 
 		frame.on("complete", function() {
 
@@ -55,16 +57,21 @@ frame.on("ready", function() {
 
 			app.makeController(model, view, pages);
 
+
 			frame.on("resize", resize);
-		    function resize() {
+		  function resize() {
 				stageW = frame.width;
 				stageH = frame.height;
+
+				// view.scale(pages.page); // logo
 				layoutManager.resize();
 			}
 
+			layoutManager.dispose(); // hides layout view bounds
+			stage.update(); // this is needed to show any changes
+
 		}); //end of frame on complete
 
-		stage.update(); // this is needed to show any changes
 
 }); // end of ready
 

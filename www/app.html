@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Cat Mouse</title>
+
+<!-- Welcome to ZIM at http://zimjs.com - Code Interactive Media Pizzazz! 	        -->
+<!-- ZIM runs on the HTML Canvas powered by JavaScript and CreateJS http://createjs.com -->
+<!-- Founded by Inventor Dan Zen - http://danzen.com - Canadian New Media Award Winner 	-->
+<!-- ZIM is free to use. You can donate to help improve ZIM at http://zimjs.com/donate 	-->
+
+<script src="http://d309knd7es5f10.cloudfront.net/createjs_1.1_min.js"></script>
+<script>
+	var zon = true; // set to false to turn off console messages from zim
+	var zns = false; // set to true to require zim namespace - eg. new zim.Frame()
+</script>
+<script src="https://d309knd7es5f10.cloudfront.net/zim_6.9.0.js"></script>
+<!-- use zimjs.com/distill for minified individual functions! -->
+
+<script src="scripts/model.js"></script>
+<script src="scripts/view.js"></script>
+<script src="scripts/controller.js"></script>
+
+
+<script>
+
+var stage;
+var stageW;
+var stageH;
+
+var frame = new Frame();
+frame.on("ready", function() {
+    zog("ready from ZIM Frame"); // logs in console (F12 - choose console)
+
+    stage = frame.stage;
+    stageW = frame.width;
+    stageH = frame.height;
+
+    frame.outerColor = "#444";
+    frame.color = "#ddd";
+
+    frame.loadAssets(["logo.jpg"], "assets/");
+
+    frame.on("complete", function() {
+
+		//handle multiple layouts
+		var layoutManager = new LayoutManager();
+
+    var model = new app.Model();
+    // zog(model.colors);
+    var view = new app.View(model, layoutManager);
+
+
+		//Pages handle going between pages.
+		// Make a Pages object and add it to the stage.
+		// All your pages from then on are added to and manipulated inside the Pages object.
+		var pages = new Pages({
+		   pages:[
+		      // imagine pages to the left, right, up and down
+		      // swipe:["to page on left", "to page on right", etc.s]
+		      {page:view.page1, swipe:[view.page2, view.page2]},
+		      {page:view.page2, swipe:[view.page1, view.page1]}
+		   ],
+		   transition:"slide",
+		   speed:1000 // slower than usual for demonstration
+		})
+			.addTo(); // don't need to specify stage b/c it's default
+
+
+		app.makeController(model, view, pages);
+
+
+		layoutManager.dispose(); // hides layout view bounds
+
+		frame.on("resize", resize);
+	    function resize() {
+			stageW = frame.width;
+			stageH = frame.height;
+			//use layout manager for multiple layouts
+			layoutManager.resize();
+			// view.layout1.resize();
+			// view.layout2.resize();
+		}
+
+		stage.update(); // this is needed to show any changes
+
+  });
+
+
+}); // end of ready
+
+</script>
+
+<meta name="viewport" content="width=device-width, user-scalable=no" />
+
+</head>
+
+<body>
+<!-- canvas with id="myCanvas" is made by zim Frame -->
+</body>
+</html>
